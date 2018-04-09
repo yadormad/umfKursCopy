@@ -40,10 +40,12 @@ public class ChartController {
                 int i = (int) Math.round((double)newValue*chartCreator.getNt()/chartCreator.getTime());
                 timeLabel.setText("t = " + i*chartCreator.getTime()/chartCreator.getNt());
                 for(int j = 0; j <= chartCreator.getNx(); j++) {
-                    double separValue = chartSeparArray[j][i];
                     double runValue = chartRunArray[j][i];
-                    dataSepar.get(j).setYValue(separValue);
                     dataRun.get(j).setYValue(runValue);
+                }
+                for(int j = 0; j <= chartCreator.getNxSepar(); j++) {
+                    double separValue = chartSeparArray[j][i];
+                    dataSepar.get(j).setYValue(separValue);
                 }
             }
         });
@@ -72,13 +74,17 @@ public class ChartController {
     private void createChart(){
         double length = chartCreator.getLength();
         double xStep = length/chartCreator.getNx();
-            for(int j = 0; j <= chartCreator.getNx(); j++) {
-                double separValue = chartSeparArray[j][0];
-                double runValue = chartRunArray[j][0];
-                double x = j*xStep;
-                dataSepar.add(new XYChart.Data<Number, Number>(x, separValue));
-                dataRun.add(new XYChart.Data<Number, Number>(x, runValue));
-            }
+        for(int j = 0; j <= chartCreator.getNx(); j++) {
+            double runValue = chartRunArray[j][0];
+            double x = j*xStep;
+            dataRun.add(new XYChart.Data<Number, Number>(x, runValue));
+        }
+        for(int j = 0; j <= chartCreator.getNxSepar(); j++) {
+            double separValue = chartSeparArray[j][0];
+            xStep = length/chartCreator.getNxSepar();
+            double x = j*xStep;
+            dataSepar.add(new XYChart.Data<Number, Number>(x, separValue));
+        }
         seriesSepar.setName("Separ");
         seriesRun.setName("Run");
 
